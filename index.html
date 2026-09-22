@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark light" />
+<meta name="theme-color" content="#0f1419" />
+<title>IPOPHL Deadlines</title>
+<style>
+:root {
+  --bg: #0f1419;
+  --bg2: #161c24;
+  --bg3: #1c2430;
+  --surface: #1a222d;
+  --border: #2a3544;
+  --border2: #3a4658;
+  --text: #e8eef6;
+  --muted: #8b9bb0;
+  --muted2: #6b7a8f;
+  --accent: #5b9fd4;
+  --danger: #f07178;
+  --warn: #e6b450;
+  --ok: #7fd962;
+  --chip: #243041;
+  --shadow: 0 8px 32px rgba(0,0,0,.45);
+  --radius: 14px;
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f4f6f9;
+    --bg2: #ffffff;
+    --bg3: #eef2f7;
+    --surface: #ffffff;
+    --border: #d5dde8;
+    --border2: #b8c4d4;
+    --text: #15202b;
+    --muted: #5a6b80;
+    --muted2: #7a8a9e;
+    --accent: #1a6fb5;
+    --chip: #e8eef6;
+    --shadow: 0 8px 28px rgba(20,40,70,.12);
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.45;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  padding:
+    calc(12px + var(--safe-t))
+    calc(14px + var(--safe-r))
+    calc(28px + var(--safe-b))
+    calc(14px + var(--safe-l));
+  max-width: 720px;
+  margin: 0 auto;
+}
+button, input { font: inherit; color: inherit; }
+button {
+  background: var(--chip);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  min-height: 44px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+button:active { opacity: .85; }
+button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+h1,h2,h3 { margin: 0; font-weight: 650; letter-spacing: -0.02em; }
+.header { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
+.header h1 { font-size: 1.45rem; }
+.header .sub {
+  color: var(--muted); font-size: .9rem;
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .7rem; font-weight: 600; letter-spacing: .02em;
+  text-transform: uppercase;
+  padding: 3px 8px; border-radius: 999px;
+  background: rgba(230,180,80,.15);
+  color: var(--warn);
+  border: 1px solid rgba(230,180,80,.35);
+}
+.chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+@media (min-width: 520px) {
+  .chips { grid-template-columns: repeat(4, 1fr); }
+}
+.chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  min-height: 72px;
+}
+.chip .n {
+  font-size: 1.55rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;
+}
+.chip .l { color: var(--muted); font-size: .78rem; margin-top: 4px; }
+.chip.warn .n { color: var(--warn); }
+.chip.alert .n { color: var(--danger); }
+.chip.ok .n { color: var(--ok); }
+.toolbar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.search {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  min-height: 48px;
+  outline: none;
+}
+.search:focus { border-color: var(--accent); }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.filters button {
+  padding: 8px 11px;
+  min-height: 40px;
+  font-size: .78rem;
+  border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.cal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; margin-bottom: 10px;
+}
+.cal-head h2 { font-size: 1.05rem; flex: 1; text-align: center; }
+.nav-btn {
+  width: 44px; height: 44px; padding: 0;
+  display: grid; place-items: center;
+  font-size: 1.2rem;
+  border-radius: 12px;
+}
+.weekdays {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: 2px; margin-bottom: 4px;
+}
+.weekdays span {
+  text-align: center; font-size: .68rem; color: var(--muted2);
+  font-weight: 600; padding: 4px 0; text-transform: uppercase;
+}
+.grid {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  touch-action: pan-y;
+}
+.day {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 4px 2px;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 3px;
+  min-height: 48px;
+}
+.day .num { font-size: .85rem; font-weight: 550; line-height: 1.2; }
+.day.muted { color: var(--muted2); opacity: .45; }
+.day.today { border-color: var(--accent); background: rgba(91,159,212,.12); }
+.day.has { background: var(--bg3); }
+.day.selected { outline: 2px solid var(--accent); }
+.pills { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; max-width: 100%; }
+.pill { width: 6px; height: 6px; border-radius: 50%; }
+.day-count { font-size: .55rem; color: var(--muted); font-weight: 700; }
+.section-title {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 8px; margin: 4px 0 10px;
+}
+.section-title h2 { font-size: 1.05rem; }
+.section-title .hint { color: var(--muted); font-size: .78rem; }
+.list { display: flex; flex-direction: column; gap: 8px; }
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 4px 1fr;
+  gap: 12px;
+  align-items: start;
+  min-height: 64px;
+}
+.card .bar { width: 4px; border-radius: 4px; align-self: stretch; min-height: 40px; }
+.card .body { min-width: 0; }
+.card .top {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 4px;
+}
+.kind-tag {
+  font-size: .68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .03em; padding: 2px 7px; border-radius: 6px;
+  background: var(--chip); border: 1px solid var(--border);
+}
+.mark { font-weight: 650; font-size: .98rem; word-break: break-word; }
+.meta-row {
+  color: var(--muted); font-size: .8rem;
+  display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px;
+}
+.meta-row code {
+  font-family: var(--mono); font-size: .76rem;
+  color: var(--text); opacity: .85;
+}
+.due { font-weight: 650; font-variant-numeric: tabular-nums; }
+.due.overdue { color: var(--danger); }
+.due.soon { color: var(--warn); }
+.empty {
+  text-align: center; color: var(--muted);
+  padding: 28px 16px; font-size: .92rem;
+  border: 1px dashed var(--border); border-radius: 12px;
+}
+.empty strong { color: var(--text); display: block; margin-bottom: 6px; }
+.sheet-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.55);
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s ease;
+  z-index: 40;
+}
+.sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  max-height: min(72dvh, 560px);
+  background: var(--surface);
+  border-radius: 18px 18px 0 0;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  z-index: 50;
+  transform: translateY(110%);
+  transition: transform .25s ease;
+  padding: 10px 14px calc(18px + var(--safe-b));
+  display: flex; flex-direction: column;
+  max-width: 720px; margin: 0 auto;
+  box-shadow: var(--shadow);
+}
+.sheet.open { transform: translateY(0); }
+.sheet .handle {
+  width: 40px; height: 4px; border-radius: 4px;
+  background: var(--border2); margin: 4px auto 12px;
+}
+.sheet h3 { font-size: 1rem; margin-bottom: 10px; }
+.sheet .sheet-list {
+  overflow: auto; -webkit-overflow-scrolling: touch;
+  display: flex; flex-direction: column; gap: 8px;
+  padding-bottom: 8px;
+}
+.legend {
+  display: flex; flex-wrap: wrap; gap: 8px 12px;
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: .72rem; color: var(--muted);
+}
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.footer-note {
+  color: var(--muted2); font-size: .72rem;
+  text-align: center; margin-top: 8px; line-height: 1.4;
+}
+</style>
+</head>
+<body>
+  <header class="header">
+    <h1>IPOPHL Deadlines</h1>
+    <div class="sub">
+      <span id="todayLabel"></span>
+      <span class="badge" title="All dates need confirmation against COR / IPOPHL records">Provisional · needs confirm</span>
+    </div>
+  </header>
+
+  <div class="chips" id="summaryChips"></div>
+
+  <div class="toolbar">
+    <input class="search" id="search" type="search" placeholder="Search mark or app / reg no" enterkeyhint="search" autocomplete="off" />
+    <div class="filters" id="kindFilters"></div>
+  </div>
+
+  <section class="panel" id="calendarPanel">
+    <div class="cal-head">
+      <button type="button" class="nav-btn" id="prevMonth" aria-label="Previous month">‹</button>
+      <h2 id="monthLabel"></h2>
+      <button type="button" class="nav-btn" id="nextMonth" aria-label="Next month">›</button>
+    </div>
+    <div class="weekdays" aria-hidden="true">
+      <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+    </div>
+    <div class="grid" id="calGrid"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section>
+    <div class="section-title">
+      <h2>Upcoming</h2>
+      <span class="hint">Next 12 months · COR-verified</span>
+    </div>
+    <div class="list" id="upcomingList"></div>
+  </section>
+
+  <section style="margin-top:22px">
+    <div class="section-title">
+      <h2>Needs COR</h2>
+      <span class="hint" id="needsCorHint"></span>
+    </div>
+    <div class="list" id="needsCorList"></div>
+  </section>
+
+  <p class="footer-note">
+    Deadlines from COR / official IPOPHL sources only · anniversary inclusive ·
+    all dates provisional · offline single-file dashboard
+  </p>
+
+  <div class="sheet-backdrop" id="sheetBackdrop"></div>
+  <div class="sheet" id="daySheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="handle"></div>
+    <h3 id="sheetTitle"></h3>
+    <div class="sheet-list" id="sheetList"></div>
+  </div>
+
+<script id="dashboard-data" type="application/json">{"meta":{"title":"IPOPHL Deadlines","generated":"2026-09-22T17:35:30","timezone":"Asia/Manila","as_of":"2026-09-22","rules":{"cor_only":true,"anniversary_inclusive":true,"provisional_all":true,"kinds":["dau_3rd","dau_5th","renewal_dau","mid_renewal_dau","registration_renewal"]},"kind_meta":{"dau_3rd":{"label":"3rd-year DAU","short":"3rd DAU","color":"#3B82F6"},"dau_5th":{"label":"5th-year DAU","short":"5th DAU","color":"#8B5CF6"},"renewal_dau":{"label":"Renewal DAU","short":"Renewal DAU","color":"#F59E0B"},"mid_renewal_dau":{"label":"Mid-renewal DAU","short":"Mid-ren. DAU","color":"#EC4899"},"registration_renewal":{"label":"Registration renewal","short":"Reg. renewal","color":"#10B981"}},"counts":{"marks_cor_verified":15,"calendar_events":43,"needs_cor":33},"sources":["/workspace/ipophil-dashboard-data.json","/workspace/ipophil-dashboard/data.json","/workspace/ipophil-filings-since-2022.csv"]},"marks":[{"app_or_reg_no":"4/2024/00525720","mark_or_title":"ANNEX","status":"Registered (COR verified)","filing_date_cor":"2024-09-18","registration_date_cor":"2025-10-04","cor_verified":true,"cor_pdf":"ANNEX_COR.pdf","date_source":"COR PDF (ANNEX_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2024/00530417","mark_or_title":"ANNEX E-SPORTS","status":"Registered (COR verified)","filing_date_cor":"2024-11-04","registration_date_cor":"2025-10-18","cor_verified":true,"cor_pdf":"ANNEX_ESPORTS_COR.pdf","date_source":"COR PDF (ANNEX_ESPORTS_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2024/00528131","mark_or_title":"ECO-ULING","status":"Registered (COR verified)","filing_date_cor":"2024-10-10","registration_date_cor":"2025-04-18","cor_verified":true,"cor_pdf":"ECO_ULING_COR.pdf","date_source":"COR PDF (ECO_ULING_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2023/00514203","mark_or_title":"ICAHST","status":"Registered (COR verified)","filing_date_cor":"2023-06-14","registration_date_cor":"2023-09-02","cor_verified":true,"cor_pdf":"ICAHST_COR.pdf","date_source":"COR PDF (ICAHST_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2025/00535329","mark_or_title":"ICEPRO (logo)","status":"Registered (COR verified)","filing_date_cor":"2025-12-20","registration_date_cor":"2026-03-30","cor_verified":true,"cor_pdf":"ICEPRO_LOGO_COR.pdf","date_source":"COR PDF (ICEPRO_LOGO_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2025/00535328","mark_or_title":"ICEPRO (word)","status":"Registered (COR verified)","filing_date_cor":"2025-12-20","registration_date_cor":"2026-03-26","cor_verified":true,"cor_pdf":"ICEPRO_WORD_COR.pdf","date_source":"COR PDF (ICEPRO_WORD_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2025/00530922","mark_or_title":"LIFT CAFE (logo)","status":"Registered (COR verified)","filing_date_cor":"2025-11-05","registration_date_cor":"2026-05-15","cor_verified":true,"cor_pdf":"LIFT_CAFE_LOGO_COR.pdf","date_source":"COR PDF (LIFT_CAFE_LOGO_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2025/00530920","mark_or_title":"LIFT CAFE (word)","status":"Registered (COR verified)","filing_date_cor":"2025-11-04","registration_date_cor":"2026-01-09","cor_verified":true,"cor_pdf":"LIFT_CAFE_WORD_COR.pdf","date_source":"COR PDF (LIFT_CAFE_WORD_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2025/00525812","mark_or_title":"METAMIND (logo)","status":"Registered (COR verified)","filing_date_cor":"2025-09-16","registration_date_cor":"2025-12-14","cor_verified":true,"cor_pdf":"METAMIND_525812_COR.pdf","date_source":"COR PDF (METAMIND_525812_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2025/00525811","mark_or_title":"METAMIND BRAIN BOOSTER (word)","status":"Registered (COR verified)","filing_date_cor":"2025-09-16","registration_date_cor":"2025-12-14","cor_verified":true,"cor_pdf":"METAMIND_525811_COR.pdf","date_source":"COR PDF (METAMIND_525811_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2025/00524251","mark_or_title":"OOKII","status":"Registered (COR verified)","filing_date_cor":"2025-08-31","registration_date_cor":"2025-10-31","cor_verified":true,"cor_pdf":"OOKII_COR.pdf","date_source":"COR PDF (OOKII_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2024/00523023","mark_or_title":"OUR PARAISO*","status":"Registered (COR verified)","filing_date_cor":"2024-08-20","registration_date_cor":"2026-02-21","cor_verified":true,"cor_pdf":"OUR_PARAISO_COR.pdf","date_source":"COR PDF (OUR_PARAISO_COR.pdf)","provisional":true},{"app_or_reg_no":"PH-4-2005-9020","mark_or_title":"PEANUT WORLD","status":"Registered; last renewal 2017-03-05 per IPOPHL","filing_date_cor":null,"registration_date_cor":null,"cor_verified":true,"cor_pdf":null,"date_source":"Official IPOPHL bot.queries email stating Renewal Date 2017-03-05 (not COR PDF)","provisional":true},{"app_or_reg_no":"4/2024/00529268","mark_or_title":"PINK PC CLUB","status":"Registered (COR verified)","filing_date_cor":"2024-10-21","registration_date_cor":"2025-02-20","cor_verified":true,"cor_pdf":"PINK_PC_CLUB_COR.pdf","date_source":"COR PDF (PINK_PC_CLUB_COR.pdf)","provisional":true},{"app_or_reg_no":"4/2024/00525969","mark_or_title":"SOAPI NATURALS","status":"Registered (COR verified)","filing_date_cor":"2024-09-17","registration_date_cor":"2025-01-11","cor_verified":true,"cor_pdf":"SOAPI_NATURALS_COR.pdf","date_source":"COR PDF (SOAPI_NATURALS_COR.pdf)","provisional":true}],"events":[{"id":"dau_3rd-past-4-2023-00514203","app_or_reg_no":"4/2023/00514203","mark_or_title":"ICAHST","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2026-06-14","window_first":"2023-06-14","reckoned_from":"filing_date_cor","reckoned_from_date":"2023-06-14","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2023-06-14","registration_date_cor":"2023-09-02","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2024-00523023","app_or_reg_no":"4/2024/00523023","mark_or_title":"OUR PARAISO*","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2027-08-20","window_first":"2024-08-20","reckoned_from":"filing_date_cor","reckoned_from_date":"2024-08-20","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2024-08-20","registration_date_cor":"2026-02-21","cor_verified":true,"provisional":true},{"id":"registration_renewal-PH-4-2005-9020","app_or_reg_no":"PH-4-2005-9020","mark_or_title":"PEANUT WORLD","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2027-09-05","window_first":"2026-09-05","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":null,"reckoned_from_label":"Registration / last renewal","filing_date_cor":null,"registration_date_cor":null,"cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2024-00525969","app_or_reg_no":"4/2024/00525969","mark_or_title":"SOAPI NATURALS","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2027-09-17","window_first":"2024-09-17","reckoned_from":"filing_date_cor","reckoned_from_date":"2024-09-17","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2024-09-17","registration_date_cor":"2025-01-11","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2024-00525720","app_or_reg_no":"4/2024/00525720","mark_or_title":"ANNEX","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2027-09-18","window_first":"2024-09-18","reckoned_from":"filing_date_cor","reckoned_from_date":"2024-09-18","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2024-09-18","registration_date_cor":"2025-10-04","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2024-00528131","app_or_reg_no":"4/2024/00528131","mark_or_title":"ECO-ULING","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2027-10-10","window_first":"2024-10-10","reckoned_from":"filing_date_cor","reckoned_from_date":"2024-10-10","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2024-10-10","registration_date_cor":"2025-04-18","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2024-00529268","app_or_reg_no":"4/2024/00529268","mark_or_title":"PINK PC CLUB","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2027-10-21","window_first":"2024-10-21","reckoned_from":"filing_date_cor","reckoned_from_date":"2024-10-21","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2024-10-21","registration_date_cor":"2025-02-20","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2024-00530417","app_or_reg_no":"4/2024/00530417","mark_or_title":"ANNEX E-SPORTS","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2027-11-04","window_first":"2024-11-04","reckoned_from":"filing_date_cor","reckoned_from_date":"2024-11-04","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2024-11-04","registration_date_cor":"2025-10-18","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2025-00524251","app_or_reg_no":"4/2025/00524251","mark_or_title":"OOKII","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2028-08-31","window_first":"2025-08-31","reckoned_from":"filing_date_cor","reckoned_from_date":"2025-08-31","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2025-08-31","registration_date_cor":"2025-10-31","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2025-00525812","app_or_reg_no":"4/2025/00525812","mark_or_title":"METAMIND (logo)","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2028-09-16","window_first":"2025-09-16","reckoned_from":"filing_date_cor","reckoned_from_date":"2025-09-16","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2025-09-16","registration_date_cor":"2025-12-14","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2025-00525811","app_or_reg_no":"4/2025/00525811","mark_or_title":"METAMIND BRAIN BOOSTER (word)","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2028-09-16","window_first":"2025-09-16","reckoned_from":"filing_date_cor","reckoned_from_date":"2025-09-16","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2025-09-16","registration_date_cor":"2025-12-14","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2025-00530920","app_or_reg_no":"4/2025/00530920","mark_or_title":"LIFT CAFE (word)","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2028-11-04","window_first":"2025-11-04","reckoned_from":"filing_date_cor","reckoned_from_date":"2025-11-04","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2025-11-04","registration_date_cor":"2026-01-09","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2025-00530922","app_or_reg_no":"4/2025/00530922","mark_or_title":"LIFT CAFE (logo)","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2028-11-05","window_first":"2025-11-05","reckoned_from":"filing_date_cor","reckoned_from_date":"2025-11-05","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2025-11-05","registration_date_cor":"2026-05-15","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2025-00535329","app_or_reg_no":"4/2025/00535329","mark_or_title":"ICEPRO (logo)","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2028-12-20","window_first":"2025-12-20","reckoned_from":"filing_date_cor","reckoned_from_date":"2025-12-20","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2025-12-20","registration_date_cor":"2026-03-30","cor_verified":true,"provisional":true},{"id":"dau_3rd-4-2025-00535328","app_or_reg_no":"4/2025/00535328","mark_or_title":"ICEPRO (word)","kind":"dau_3rd","kind_label":"3rd-year DAU","kind_short":"3rd DAU","color":"#3B82F6","due_date":"2028-12-20","window_first":"2025-12-20","reckoned_from":"filing_date_cor","reckoned_from_date":"2025-12-20","reckoned_from_label":"Filing date (COR)","filing_date_cor":"2025-12-20","registration_date_cor":"2026-03-26","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2023-00514203","app_or_reg_no":"4/2023/00514203","mark_or_title":"ICAHST","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2029-09-02","window_first":"2028-09-02","reckoned_from":"registration_date_cor","reckoned_from_date":"2023-09-02","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2023-06-14","registration_date_cor":"2023-09-02","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2024-00525969","app_or_reg_no":"4/2024/00525969","mark_or_title":"SOAPI NATURALS","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2031-01-11","window_first":"2030-01-11","reckoned_from":"registration_date_cor","reckoned_from_date":"2025-01-11","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2024-09-17","registration_date_cor":"2025-01-11","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2024-00529268","app_or_reg_no":"4/2024/00529268","mark_or_title":"PINK PC CLUB","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2031-02-20","window_first":"2030-02-20","reckoned_from":"registration_date_cor","reckoned_from_date":"2025-02-20","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2024-10-21","registration_date_cor":"2025-02-20","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2024-00528131","app_or_reg_no":"4/2024/00528131","mark_or_title":"ECO-ULING","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2031-04-18","window_first":"2030-04-18","reckoned_from":"registration_date_cor","reckoned_from_date":"2025-04-18","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2024-10-10","registration_date_cor":"2025-04-18","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2024-00525720","app_or_reg_no":"4/2024/00525720","mark_or_title":"ANNEX","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2031-10-04","window_first":"2030-10-04","reckoned_from":"registration_date_cor","reckoned_from_date":"2025-10-04","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2024-09-18","registration_date_cor":"2025-10-04","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2024-00530417","app_or_reg_no":"4/2024/00530417","mark_or_title":"ANNEX E-SPORTS","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2031-10-18","window_first":"2030-10-18","reckoned_from":"registration_date_cor","reckoned_from_date":"2025-10-18","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2024-11-04","registration_date_cor":"2025-10-18","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2025-00524251","app_or_reg_no":"4/2025/00524251","mark_or_title":"OOKII","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2031-10-31","window_first":"2030-10-31","reckoned_from":"registration_date_cor","reckoned_from_date":"2025-10-31","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2025-08-31","registration_date_cor":"2025-10-31","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2025-00525812","app_or_reg_no":"4/2025/00525812","mark_or_title":"METAMIND (logo)","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2031-12-14","window_first":"2030-12-14","reckoned_from":"registration_date_cor","reckoned_from_date":"2025-12-14","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2025-09-16","registration_date_cor":"2025-12-14","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2025-00525811","app_or_reg_no":"4/2025/00525811","mark_or_title":"METAMIND BRAIN BOOSTER (word)","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2031-12-14","window_first":"2030-12-14","reckoned_from":"registration_date_cor","reckoned_from_date":"2025-12-14","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2025-09-16","registration_date_cor":"2025-12-14","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2025-00530920","app_or_reg_no":"4/2025/00530920","mark_or_title":"LIFT CAFE (word)","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2032-01-09","window_first":"2031-01-09","reckoned_from":"registration_date_cor","reckoned_from_date":"2026-01-09","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2025-11-04","registration_date_cor":"2026-01-09","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2024-00523023","app_or_reg_no":"4/2024/00523023","mark_or_title":"OUR PARAISO*","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2032-02-21","window_first":"2031-02-21","reckoned_from":"registration_date_cor","reckoned_from_date":"2026-02-21","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2024-08-20","registration_date_cor":"2026-02-21","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2025-00535328","app_or_reg_no":"4/2025/00535328","mark_or_title":"ICEPRO (word)","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2032-03-26","window_first":"2031-03-26","reckoned_from":"registration_date_cor","reckoned_from_date":"2026-03-26","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2025-12-20","registration_date_cor":"2026-03-26","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2025-00535329","app_or_reg_no":"4/2025/00535329","mark_or_title":"ICEPRO (logo)","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2032-03-30","window_first":"2031-03-30","reckoned_from":"registration_date_cor","reckoned_from_date":"2026-03-30","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2025-12-20","registration_date_cor":"2026-03-30","cor_verified":true,"provisional":true},{"id":"dau_5th-4-2025-00530922","app_or_reg_no":"4/2025/00530922","mark_or_title":"LIFT CAFE (logo)","kind":"dau_5th","kind_label":"5th-year DAU","kind_short":"5th DAU","color":"#8B5CF6","due_date":"2032-05-15","window_first":"2031-05-15","reckoned_from":"registration_date_cor","reckoned_from_date":"2026-05-15","reckoned_from_label":"Registration date (COR)","filing_date_cor":"2025-11-05","registration_date_cor":"2026-05-15","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2023-00514203","app_or_reg_no":"4/2023/00514203","mark_or_title":"ICAHST","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2034-03-02","window_first":"2033-03-02","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2023-09-02","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2023-06-14","registration_date_cor":"2023-09-02","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2024-00525969","app_or_reg_no":"4/2024/00525969","mark_or_title":"SOAPI NATURALS","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2035-07-11","window_first":"2034-07-11","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2025-01-11","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2024-09-17","registration_date_cor":"2025-01-11","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2024-00529268","app_or_reg_no":"4/2024/00529268","mark_or_title":"PINK PC CLUB","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2035-08-20","window_first":"2034-08-20","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2025-02-20","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2024-10-21","registration_date_cor":"2025-02-20","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2024-00528131","app_or_reg_no":"4/2024/00528131","mark_or_title":"ECO-ULING","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2035-10-18","window_first":"2034-10-18","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2025-04-18","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2024-10-10","registration_date_cor":"2025-04-18","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2024-00525720","app_or_reg_no":"4/2024/00525720","mark_or_title":"ANNEX","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2036-04-04","window_first":"2035-04-04","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2025-10-04","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2024-09-18","registration_date_cor":"2025-10-04","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2024-00530417","app_or_reg_no":"4/2024/00530417","mark_or_title":"ANNEX E-SPORTS","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2036-04-18","window_first":"2035-04-18","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2025-10-18","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2024-11-04","registration_date_cor":"2025-10-18","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2025-00524251","app_or_reg_no":"4/2025/00524251","mark_or_title":"OOKII","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2036-04-30","window_first":"2035-04-30","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2025-10-31","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2025-08-31","registration_date_cor":"2025-10-31","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2025-00525812","app_or_reg_no":"4/2025/00525812","mark_or_title":"METAMIND (logo)","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2036-06-14","window_first":"2035-06-14","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2025-12-14","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2025-09-16","registration_date_cor":"2025-12-14","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2025-00525811","app_or_reg_no":"4/2025/00525811","mark_or_title":"METAMIND BRAIN BOOSTER (word)","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2036-06-14","window_first":"2035-06-14","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2025-12-14","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2025-09-16","registration_date_cor":"2025-12-14","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2025-00530920","app_or_reg_no":"4/2025/00530920","mark_or_title":"LIFT CAFE (word)","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2036-07-09","window_first":"2035-07-09","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2026-01-09","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2025-11-04","registration_date_cor":"2026-01-09","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2024-00523023","app_or_reg_no":"4/2024/00523023","mark_or_title":"OUR PARAISO*","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2036-08-21","window_first":"2035-08-21","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2026-02-21","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2024-08-20","registration_date_cor":"2026-02-21","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2025-00535328","app_or_reg_no":"4/2025/00535328","mark_or_title":"ICEPRO (word)","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2036-09-26","window_first":"2035-09-26","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2026-03-26","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2025-12-20","registration_date_cor":"2026-03-26","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2025-00535329","app_or_reg_no":"4/2025/00535329","mark_or_title":"ICEPRO (logo)","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2036-09-30","window_first":"2035-09-30","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2026-03-30","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2025-12-20","registration_date_cor":"2026-03-30","cor_verified":true,"provisional":true},{"id":"registration_renewal-4-2025-00530922","app_or_reg_no":"4/2025/00530922","mark_or_title":"LIFT CAFE (logo)","kind":"registration_renewal","kind_label":"Registration renewal","kind_short":"Reg. renewal","color":"#10B981","due_date":"2036-11-15","window_first":"2035-11-15","reckoned_from":"registration_date_cor / last renewal","reckoned_from_date":"2026-05-15","reckoned_from_label":"Registration / last renewal","filing_date_cor":"2025-11-05","registration_date_cor":"2026-05-15","cor_verified":true,"provisional":true}],"needs_cor":[{"app_or_reg_no":"4/2026/00518317","mark_or_title":"(unknown — Application Notification PDF)","status":"Application notification received","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"filename only No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00522126","mark_or_title":"ANTI GUTOM CRAVINGS CLUB (logo)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00522123","mark_or_title":"ANTI GUTOM CRAVINGS CLUB (word)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00514546","mark_or_title":"BAESTARD (B short logo)","status":"Registered (per reminder)","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"email calendar only; COR not downloaded — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00514545","mark_or_title":"BAESTARD (long logo)","status":"Registered (per reminder)","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"email calendar only; COR not downloaded — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00514543","mark_or_title":"BAESTARD (word)","status":"Registered (per reminder)","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"email calendar only; COR not downloaded — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2019/00016758","mark_or_title":"CARL E. BALITA REVIEW CENTER WHERE THE DREAM AND THE DREAMER BECOME ONE","status":"Registered; 5th-year DAU filed 2026-02-01 (pending fee issues)","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"prior note-to-self / filing email — NOT COR; demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00511488","mark_or_title":"CBRC","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00520101","mark_or_title":"CHILICIOUS","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00515899","mark_or_title":"DR CARL BALITA PRODUCTIONS (logo)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00515898","mark_or_title":"DR CARL BALITA PRODUCTIONS (word)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00515903","mark_or_title":"DR ULTIMATE LEARNING SERIES (ULS)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00513592","mark_or_title":"DR. CARL E. BALITA","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00515436","mark_or_title":"INAPUYAN","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00526162","mark_or_title":"KUSINA NI GRASYA (logo)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted; user requested COR Sep 2026 No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00526161","mark_or_title":"KUSINA NI GRASYA (word)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted; user requested COR Sep 2026 No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00515444","mark_or_title":"LITTLE LAMB'S KIDDIE","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00512674","mark_or_title":"LITTLE LAMBS","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"42019005495","mark_or_title":"MAHALTA (older registration)","status":"Registered; 5th-year DAU window noted historically","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self registration date — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2025/00512129","mark_or_title":"MAHALTA (word, newer)","status":"Registered (per reminder)","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"email calendar only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00517071","mark_or_title":"MDN DENTAL (logo)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00517255","mark_or_title":"MDN DENTAL (word)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00517065","mark_or_title":"MODERN SMILES FOR THE MODERN TIMES","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"2024507925","mark_or_title":"MUNCH CRUNCH","status":"For further action by examiner","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"status email only No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"2024507927","mark_or_title":"MUNCH CRUNCH (2)","status":"For further action by examiner","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"status email only No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"2024505963","mark_or_title":"Philippine Young Entrepreneurs Association","status":"For further action by examiner","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"status email only No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00520204","mark_or_title":"PINKEYS (logo)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00520236","mark_or_title":"PINKEYS (word)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00517281","mark_or_title":"QUARTERS","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00525059","mark_or_title":"SELF-MADE YOU (logo / MDN Dental per subject mismatch?)","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted; subject/mark mismatch risk No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2024/00525965","mark_or_title":"SOAPI NATURALS (inquiry app)","status":"Database shows registered; COR not received for this app no.","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"User inquired re COR for 4/2024/00525965; COR on file is different app 4/2024/00525969 No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2024/00505903","mark_or_title":"SOLUNA","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."},{"app_or_reg_no":"4/2023/00522610","mark_or_title":"STREET BOWLS","status":"Unknown/registered assumed","filing_date_stated":null,"registration_date_stated":null,"date_source":"no COR — dates unknown","calendar_source":"needs COR","reason":"needs COR","notes":"note-to-self only — demoted No deadline computed until COR (or official IPOPHL notice quoting COR dates) is obtained."}]}</script>
+<script>
+(function () {
+  const DATA = JSON.parse(document.getElementById('dashboard-data').textContent);
+  const KIND_META = DATA.meta.kind_meta;
+  const ALL_KINDS = Object.keys(KIND_META);
+  const TZ = 'Asia/Manila';
+
+  function manilaToday() {
+    try {
+      const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit'
+      }).formatToParts(new Date());
+      const y = parts.find(p => p.type === 'year').value;
+      const m = parts.find(p => p.type === 'month').value;
+      const d = parts.find(p => p.type === 'day').value;
+      return y + '-' + m + '-' + d;
+    } catch (e) {
+      return DATA.meta.as_of;
+    }
+  }
+
+  const todayStr = manilaToday();
+  const today = parseISO(todayStr);
+
+  const state = {
+    year: today.getFullYear(),
+    month: today.getMonth(),
+    enabledKinds: new Set(ALL_KINDS),
+    query: '',
+    selectedDay: null,
+  };
+
+  function parseISO(s) {
+    const [y, m, d] = s.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
+  function fmtISO(dt) {
+    const y = dt.getFullYear();
+    const m = String(dt.getMonth() + 1).padStart(2, '0');
+    const d = String(dt.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + d;
+  }
+  function addDays(dt, n) {
+    return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + n);
+  }
+  function addMonthsDate(dt, n) {
+    return new Date(dt.getFullYear(), dt.getMonth() + n, dt.getDate());
+  }
+  function fmtLong(iso) {
+    return parseISO(iso).toLocaleDateString('en-PH', {
+      weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+    });
+  }
+  function fmtMonthYear(y, m0) {
+    return new Date(y, m0, 1).toLocaleDateString('en-PH', { month: 'long', year: 'numeric' });
+  }
+  function daysBetween(a, b) {
+    return Math.round((parseISO(b) - parseISO(a)) / 86400000);
+  }
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  function filteredEvents() {
+    const q = state.query.trim().toLowerCase();
+    return DATA.events.filter(e => {
+      if (!state.enabledKinds.has(e.kind)) return false;
+      if (!q) return true;
+      return (e.mark_or_title || '').toLowerCase().includes(q)
+        || (e.app_or_reg_no || '').toLowerCase().includes(q);
+    });
+  }
+  function filteredNeedsCor() {
+    const q = state.query.trim().toLowerCase();
+    if (!q) return DATA.needs_cor;
+    return DATA.needs_cor.filter(m =>
+      (m.mark_or_title || '').toLowerCase().includes(q)
+      || (m.app_or_reg_no || '').toLowerCase().includes(q)
+    );
+  }
+
+  function summary(events) {
+    const endMonth = fmtISO(new Date(today.getFullYear(), today.getMonth() + 1, 0));
+    const end90 = fmtISO(addDays(today, 90));
+    let dueMonth = 0, due90 = 0;
+    for (const e of events) {
+      if (e.due_date >= todayStr && e.due_date <= endMonth) dueMonth++;
+      if (e.due_date >= todayStr && e.due_date <= end90) due90++;
+    }
+    return {
+      dueMonth,
+      due90,
+      needsCor: DATA.meta.counts.needs_cor,
+      corVerified: DATA.meta.counts.marks_cor_verified,
+    };
+  }
+
+  function chip(n, label, cls) {
+    return '<div class="chip ' + (cls || '') + '"><div class="n">' + n + '</div><div class="l">' + label + '</div></div>';
+  }
+  function renderChips() {
+    const s = summary(filteredEvents());
+    document.getElementById('summaryChips').innerHTML = [
+      chip(s.dueMonth, 'Due this month', s.dueMonth ? 'warn' : ''),
+      chip(s.due90, 'Next 90 days', s.due90 ? 'warn' : ''),
+      chip(s.needsCor, 'Needs COR', 'alert'),
+      chip(s.corVerified, 'COR-verified', 'ok'),
+    ].join('');
+  }
+
+  function renderFilters() {
+    const el = document.getElementById('kindFilters');
+    el.innerHTML = ALL_KINDS.map(k => {
+      const meta = KIND_META[k];
+      const on = state.enabledKinds.has(k);
+      return '<button type="button" data-kind="' + k + '" class="' + (on ? 'active' : '') + '">'
+        + '<span class="dot" style="background:' + meta.color + '"></span>'
+        + meta.short + '</button>';
+    }).join('');
+    el.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const k = btn.getAttribute('data-kind');
+        if (state.enabledKinds.has(k)) state.enabledKinds.delete(k);
+        else state.enabledKinds.add(k);
+        renderAll();
+      });
+    });
+  }
+
+  function renderLegend() {
+    document.getElementById('legend').innerHTML = ALL_KINDS.map(k => {
+      const meta = KIND_META[k];
+      return '<span><i class="dot" style="background:' + meta.color + '"></i>' + meta.label + '</span>';
+    }).join('');
+  }
+
+  function eventsByDay(events) {
+    const map = {};
+    for (const e of events) {
+      (map[e.due_date] || (map[e.due_date] = [])).push(e);
+    }
+    return map;
+  }
+
+  function dayCell(iso, num, muted, list) {
+    const classes = ['day'];
+    if (muted) classes.push('muted');
+    if (iso === todayStr) classes.push('today');
+    if (list.length) classes.push('has');
+    if (iso && state.selectedDay === iso) classes.push('selected');
+    const seen = new Set();
+    const kinds = [];
+    for (const e of list) {
+      if (!seen.has(e.kind)) { seen.add(e.kind); kinds.push(e); }
+    }
+    const pills = kinds.slice(0, 4).map(e =>
+      '<span class="pill" style="background:' + e.color + '"></span>'
+    ).join('');
+    const extra = list.length > 4
+      ? '<span class="day-count">+' + (list.length - 4) + '</span>'
+      : (list.length > 1 && kinds.length <= 1 ? '<span class="day-count">' + list.length + '</span>' : '');
+    return '<button type="button" class="' + classes.join(' ') + '"'
+      + (iso ? ' data-iso="' + iso + '"' : ' disabled')
+      + ' aria-label="' + (iso || '') + (list.length ? (', ' + list.length + ' deadlines') : '') + '">'
+      + '<span class="num">' + num + '</span>'
+      + '<span class="pills">' + pills + extra + '</span></button>';
+  }
+
+  function renderCalendar() {
+    document.getElementById('monthLabel').textContent = fmtMonthYear(state.year, state.month);
+    const byDay = eventsByDay(filteredEvents());
+    const first = new Date(state.year, state.month, 1);
+    const startPad = first.getDay();
+    const daysInMonth = new Date(state.year, state.month + 1, 0).getDate();
+    const prevDays = new Date(state.year, state.month, 0).getDate();
+    const cells = [];
+    for (let i = 0; i < startPad; i++) {
+      cells.push(dayCell(null, prevDays - startPad + i + 1, true, []));
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const iso = fmtISO(new Date(state.year, state.month, d));
+      cells.push(dayCell(iso, d, false, byDay[iso] || []));
+    }
+    const rem = (7 - (cells.length % 7)) % 7;
+    for (let i = 1; i <= rem; i++) cells.push(dayCell(null, i, true, []));
+    document.getElementById('calGrid').innerHTML = cells.join('');
+    document.querySelectorAll('.day[data-iso]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const iso = btn.getAttribute('data-iso');
+        const list = byDay[iso] || [];
+        if (!list.length) return;
+        openSheet(iso, list);
+      });
+    });
+  }
+
+  function dueClass(iso) {
+    if (iso < todayStr) return 'overdue';
+    if (daysBetween(todayStr, iso) <= 90) return 'soon';
+    return '';
+  }
+
+  function eventCard(e) {
+    const cls = dueClass(e.due_date);
+    const overdueLabel = e.due_date < todayStr ? ' · overdue' : '';
+    return '<article class="card">'
+      + '<div class="bar" style="background:' + e.color + '"></div>'
+      + '<div class="body">'
+      + '<div class="top">'
+      + '<span class="kind-tag" style="border-color:' + e.color + '33;color:' + e.color + '">' + e.kind_short + '</span>'
+      + '<span class="badge">Provisional</span>'
+      + '</div>'
+      + '<div class="mark">' + escapeHtml(e.mark_or_title) + '</div>'
+      + '<div class="meta-row">'
+      + '<span class="due ' + cls + '">' + fmtLong(e.due_date) + overdueLabel + '</span>'
+      + '<code>' + escapeHtml(e.app_or_reg_no) + '</code>'
+      + '<span>from ' + escapeHtml(e.reckoned_from_label) + '</span>'
+      + '</div></div></article>';
+  }
+
+  function needsCard(m) {
+    return '<article class="card">'
+      + '<div class="bar" style="background:var(--danger)"></div>'
+      + '<div class="body">'
+      + '<div class="top"><span class="kind-tag">Needs COR</span></div>'
+      + '<div class="mark">' + escapeHtml(m.mark_or_title) + '</div>'
+      + '<div class="meta-row">'
+      + '<code>' + escapeHtml(m.app_or_reg_no) + '</code>'
+      + '<span>' + escapeHtml(m.reason || '') + '</span>'
+      + '</div>'
+      + (m.filing_date_stated || m.registration_date_stated
+        ? '<div class="meta-row" style="opacity:.75">Stated (non-COR): '
+          + (m.filing_date_stated ? 'filing ' + m.filing_date_stated : '')
+          + (m.filing_date_stated && m.registration_date_stated ? ' · ' : '')
+          + (m.registration_date_stated ? 'reg ' + m.registration_date_stated : '')
+          + '</div>'
+        : '')
+      + '</div></article>';
+  }
+
+  function renderUpcoming() {
+    const end = fmtISO(addMonthsDate(today, 12));
+    const lookback = fmtISO(addMonthsDate(today, -18));
+    const upcoming = filteredEvents().filter(e => {
+      if (e.due_date >= todayStr && e.due_date <= end) return true;
+      if (e.due_date < todayStr && e.due_date >= lookback) return true;
+      return false;
+    }).sort((a, b) => a.due_date < b.due_date ? -1 : 1);
+    const el = document.getElementById('upcomingList');
+    if (!upcoming.length) {
+      el.innerHTML = '<div class="empty"><strong>No COR-verified deadlines in range</strong>Calendar stays sparse until more Certificates of Registration are on file. Check Needs COR below.</div>';
+      return;
+    }
+    el.innerHTML = upcoming.map(eventCard).join('');
+  }
+
+  function renderNeedsCor() {
+    const list = filteredNeedsCor();
+    document.getElementById('needsCorHint').textContent = list.length + ' mark' + (list.length === 1 ? '' : 's');
+    const el = document.getElementById('needsCorList');
+    if (!list.length) {
+      el.innerHTML = '<div class="empty"><strong>All marks have COR coverage</strong>No outstanding COR gaps for the current filter.</div>';
+      return;
+    }
+    el.innerHTML = list.map(needsCard).join('');
+  }
+
+  function openSheet(iso, list) {
+    state.selectedDay = iso;
+    document.getElementById('sheetTitle').textContent = fmtLong(iso) + ' · ' + list.length + ' deadline' + (list.length === 1 ? '' : 's');
+    document.getElementById('sheetList').innerHTML = list.map(eventCard).join('');
+    document.getElementById('daySheet').classList.add('open');
+    document.getElementById('sheetBackdrop').classList.add('open');
+    renderCalendar();
+  }
+  function closeSheet() {
+    state.selectedDay = null;
+    document.getElementById('daySheet').classList.remove('open');
+    document.getElementById('sheetBackdrop').classList.remove('open');
+    renderCalendar();
+  }
+
+  function renderAll() {
+    renderChips();
+    renderFilters();
+    renderCalendar();
+    renderUpcoming();
+    renderNeedsCor();
+  }
+
+  document.getElementById('todayLabel').textContent = fmtLong(todayStr) + ' · Asia/Manila';
+  document.getElementById('prevMonth').addEventListener('click', () => {
+    state.month -= 1;
+    if (state.month < 0) { state.month = 11; state.year -= 1; }
+    renderCalendar();
+  });
+  document.getElementById('nextMonth').addEventListener('click', () => {
+    state.month += 1;
+    if (state.month > 11) { state.month = 0; state.year += 1; }
+    renderCalendar();
+  });
+
+  (function () {
+    const grid = document.getElementById('calGrid');
+    let x0 = null;
+    grid.addEventListener('touchstart', e => { x0 = e.changedTouches[0].clientX; }, { passive: true });
+    grid.addEventListener('touchend', e => {
+      if (x0 == null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      x0 = null;
+      if (Math.abs(dx) < 50) return;
+      if (dx < 0) document.getElementById('nextMonth').click();
+      else document.getElementById('prevMonth').click();
+    }, { passive: true });
+  })();
+
+  document.getElementById('sheetBackdrop').addEventListener('click', closeSheet);
+  document.getElementById('search').addEventListener('input', e => {
+    state.query = e.target.value;
+    renderAll();
+  });
+
+  renderLegend();
+  renderAll();
+})();
+</script>
+</body>
+</html>
